@@ -18,4 +18,13 @@ public class UTIL {
         for(DIRECTION i: d)
             System.out.println(i);
     }
+
+    public static boolean isBetween(double val, double x1, double x2){
+        boolean btn = false;
+        if((val < x1) && (val > x2))
+            btn = true;
+        if((val > x1) && (val < x2))
+            btn = true;
+        return btn;
+    }
 }

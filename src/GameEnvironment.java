@@ -22,24 +22,39 @@ public class GameEnvironment {
 
     public GameEnvironment(){
         collidables = new ArrayList<>();
+
         setUpperBorderBlock();
         setRightBorderBlock();
         setLowerBorderBlock();
         setLeftBorderBlock();
-        //setGameBlocks();
+        setUpperRightBorder();
+        setGameBlocks();
+    }
+
+    private void setUpperRightBorder() {
+        this.addCollidable(new Block(
+                new Rectangle(
+                        new Point(
+                                779,0
+                        ),21,21
+                )
+                ,new Color(1f,1f,1f,1f)
+        ));
     }
 
     private void setGameBlocks() {
+        Color[] clrs = new Color[]{Color.GREEN, Color.BLUE,Color.ORANGE,Color.CYAN,Color.GRAY,Color.WHITE};
         for(int i = 0; i < NUM_BLOCK_LINES; i++){
             for(int j = 0; j < MAX_BLOCKS_IN_LINE - i; j++){
                 collidables.add
                         (new Block
                                 (new Rectangle
                                         (new Point
-                                                ((SCREEN_WIDTH - BORDER_SHORT_EDGE) - (i+1)*BLOCK_WIDTH
-                                                        ,(4 * BORDER_SHORT_EDGE + i) + BLOCK_HIGHT)
+                                                ((SCREEN_WIDTH - BORDER_SHORT_EDGE) - (j+1)*BLOCK_WIDTH
+                                                        ,(BORDER_SHORT_EDGE * 5 + BORDER_SHORT_EDGE * i) + BLOCK_HIGHT)
                                         ,BLOCK_WIDTH
-                                        ,BLOCK_HIGHT)));
+                                        ,BLOCK_HIGHT)
+                                        , clrs[i]));
             }
         }
     }
@@ -48,8 +63,8 @@ public class GameEnvironment {
         this.addCollidable(
                 new Block(
                         new Rectangle(
-                                new Point(0,0)
-                                ,SCREEN_WIDTH
+                                new Point(BORDER_SHORT_EDGE,0)
+                                ,SCREEN_WIDTH - (2 * BORDER_SHORT_EDGE)
                                 ,BORDER_SHORT_EDGE
                         )
                         ,Color.blue
@@ -61,8 +76,9 @@ public class GameEnvironment {
         this.addCollidable(
                 new Block(
                         new Rectangle(
-                                new Point(0,SCREEN_HEIGHT-BORDER_SHORT_EDGE)
-                                ,SCREEN_WIDTH
+                                new Point(BORDER_SHORT_EDGE
+                                        ,SCREEN_HEIGHT-BORDER_SHORT_EDGE)
+                                ,SCREEN_WIDTH - 2 * BORDER_SHORT_EDGE
                                 ,BORDER_SHORT_EDGE
                         )
                         ,Color.blue
@@ -74,9 +90,10 @@ public class GameEnvironment {
         this.addCollidable(
                 new Block(
                         new Rectangle(
-                                new Point(SCREEN_WIDTH-BORDER_SHORT_EDGE,0)
+                                new Point(SCREEN_WIDTH-BORDER_SHORT_EDGE
+                                        ,BORDER_SHORT_EDGE)
                                 ,BORDER_SHORT_EDGE
-                                ,SCREEN_HEIGHT
+                                ,SCREEN_HEIGHT - 2 * BORDER_SHORT_EDGE
                         )
                         ,Color.blue
                 )
@@ -87,9 +104,19 @@ public class GameEnvironment {
         this.addCollidable(
                 new Block(
                         new Rectangle(
-                                new Point(0,0)
+                                new Point(0,BORDER_SHORT_EDGE)
                                 ,BORDER_SHORT_EDGE
-                                ,SCREEN_HEIGHT
+                                ,SCREEN_HEIGHT - 2 * BORDER_SHORT_EDGE
+                        )
+                        ,Color.blue
+                )
+        );
+        this.addCollidable(
+                new Block(
+                        new Rectangle(
+                                new Point(780,0)
+                                ,BORDER_SHORT_EDGE
+                                ,BORDER_SHORT_EDGE
                         )
                         ,Color.blue
                 )
@@ -117,6 +144,15 @@ public class GameEnvironment {
                 || (this.getLowerBorderBlock() == block)
                 || (this.getRightBorderBlock() == block)
                 || (this.getLeftBorderBlock() == block);
+    }
+
+    public List<Block> pointOnBlocks(Point p){
+        List<Block> ptr = new ArrayList<>();
+        for(Collidable c: collidables){
+            if (((Block)c).isPointInside(p))
+                ptr.add((Block)c);
+        }
+        return ptr;
     }
 
     public Block[] getBorders()

@@ -15,4 +15,8 @@ public class CollisionInfo {
     public Collidable collisionObject(){
         return this._collisionObject;
     }
+
+    public String toString(){
+        return String.format("Obj: " + this._collisionObject + "Point: "+this._collisionPoint);
+    }
 }

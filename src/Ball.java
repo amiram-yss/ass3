@@ -260,16 +260,21 @@ public class Ball {
 
     }
 
+    public boolean isCollidingInTheNextMovement(Point newLocation){
+        return !(center.distance(newLocation)
+                < center.distance(getClosestIntersectionPoint()));
+    }
+
     public void moveOneStep() {
+        //No collision occurred:
         Point newLocation = this.velocity.applyToPoint(this.center);
-        if(center.distance(newLocation) < center.distance(getClosestIntersectionPoint())){
+        if(!isCollidingInTheNextMovement(newLocation)){
             center = new Point(newLocation);
             return;
         }
-        //If a hit occured:
+        //If a hit occurred:
         Line traj = new Line(this.center, newLocation);
-        if(UTIL.DEBUG_MODE)
-            UTIL.NOP();
+        //TODO check case of multiple object intersection.
         var collisionInfo = gameEnvironment
                 .getClosestCollision(traj);
         Velocity newVelocity = collisionInfo.collisionObject().hit(
@@ -292,7 +297,6 @@ public class Ball {
 
     public Point getIntersectionPointWithBorders() {
         Point ptr = null;
-
         Line fullLengthLine = createTrajectoryFromBallToEndOfTheBoard();
         for (Collidable c : gameEnvironment.getBorders()) {
             ptr = fullLengthLine.closestIntersectionToStartOfLine
@@ -327,8 +331,7 @@ public class Ball {
     }
 
     public Line getClosestIntersectionLine() {
-        Line l = new Line(this.center, getClosestIntersectionPoint());
-        return l;
+        return new Line(this.center, getClosestIntersectionPoint());
     }
 
 }

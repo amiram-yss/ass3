@@ -14,30 +14,21 @@ public class Test6 {
         GameEnvironment ge = new GameEnvironment();
 
         Line l1;
-        Ball b = new Ball(new Point(200,200),5, Color.RED,ge);
+        Ball b = new Ball(new Point(700,100),5, Color.RED,ge);
         Point p;
-        b.setVelocity(Velocity.fromAngleAndSpeed(45,5));
-        ge.addCollidable
-                (new Block
-                        (new Rectangle
-                                (new Point(300,100), 100,50)
-                                ,Color.BLUE));
-        ge.addCollidable
-                (new Block
-                        (new Rectangle
-                                (new Point(200,50), 100,50)
-                                ,Color.GREEN));
+        b.setVelocity(Velocity.fromAngleAndSpeed(45,4));
+
 
         while (true){
             ctr++;
-            System.out.println(b.velocity);
-            if(ctr == 110)
+            //System.out.println(b.velocity);
+            if(b.center.getX() > 200)
                 UTIL.DEBUG_MODE = true;
-            b.drawOn(d);
             ge.drawOn(d);
+            b.drawOn(d);
             l1 = b.getClosestIntersectionLine();
             p = b.getClosestIntersectionPoint();
-            System.out.println(b.center);
+            //System.out.println(b.center);
             p.drawOn(d,Color.RED);
             l1.drawOn(d,Color.BLACK);
             gui.show(d);

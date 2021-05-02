@@ -307,7 +307,7 @@ public class Line {
         double minLen = Double.MAX_VALUE;
         for(Point p: pts){
 
-            if(isBetween(p.getX(),this.start.getX(),this.end.getX())
+            if(UTIL.isBetween(p.getX(),this.start.getX(),this.end.getX())
                     && (p.distance(start)<closest.distance(start)))
                 closest = p;
         }
@@ -318,21 +318,14 @@ public class Line {
         return new Point(x,mn[0]*x+mn[1]);
     }
 
-    private static boolean isBetween(double val, double x1, double x2){
-        boolean btn = false;
-        if((val< x1) && (val>x2))
-            btn = true;
-        if((val> x1) && (val<x2))
-            btn = true;
-        return btn;
-    }
+
 
     public boolean isPointOnLine(Point p){
         if(isVertical(this) && UTIL.equals(p.getX(),this.start.getX()))
-            return (isBetween(p.getY(),start.getY(), end.getY())
+            return (UTIL.isBetween(p.getY(),start.getY(), end.getY())
                     || p.getY() == this.start.getY()
                     || p.getY() == this.end.getY());
-        if(!(isBetween(p.getX(),start.getX(),end.getX())
+        if(!(UTIL.isBetween(p.getX(),start.getX(),end.getX())
             || UTIL.equals(p.getX(),start.getX())
             || UTIL.equals(p.getX(),end.getX())))
             return false;
