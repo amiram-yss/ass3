@@ -9,6 +9,12 @@ public class Rectangle {
     private Point upperLeft;
     private double width, height;
     // Create a new rectangle with location and width/height.
+
+    private static final int UP = 0;
+    private static final int RT = 1;
+    private static final int DN = 2;
+    private static final int LF = 3;
+
     public Rectangle(Point upperLeft, double width, double height)
     {
         this.upperLeft = upperLeft;
@@ -43,11 +49,35 @@ public class Rectangle {
     public Line[] getLines()
     {
         return new Line[]{
-                new Line(getPoints()[0],getPoints()[1])
-                ,new Line(getPoints()[1],getPoints()[2])
-                ,new Line(getPoints()[2],getPoints()[3])
-                ,new Line(getPoints()[3],getPoints()[0])
+                new Line(getPoints()[UP],getPoints()[RT])
+                ,new Line(getPoints()[RT],getPoints()[DN])
+                ,new Line(getPoints()[DN],getPoints()[LF])
+                ,new Line(getPoints()[LF],getPoints()[UP])
         };
+    }
+
+    public List<DIRECTION> directionOfEdgeWithThePoint(Point p){
+        List<DIRECTION> ltr = new ArrayList<>();
+        Line[] edges = this.getLines();
+        for(int i = 0 ; i< edges.length; i++){
+            if(edges[i].isPointOnLine(p)){
+                switch (i) {
+                    case UP:
+                        ltr.add(DIRECTION.UP);
+                        break;
+                    case RT:
+                        ltr.add(DIRECTION.RIGHT);
+                        break;
+                    case DN:
+                        ltr.add(DIRECTION.DOWN);
+                        break;
+                    case LF:
+                        ltr.add(DIRECTION.LEFT);
+                        break;
+                }
+            }
+        }
+        return ltr;
     }
 
     // Return a (possibly empty) List of intersection points

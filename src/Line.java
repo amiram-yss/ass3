@@ -101,7 +101,6 @@ public class Line {
         double n = onLine.getY()-(m*onLine.getX());
         return new double[]{m,n};
     }
-    @Deprecated
     /**
      * Gives a linear representation of an equation between 2 points
      * @param line
@@ -146,8 +145,7 @@ public class Line {
         }
 
         //If other line is vertical
-        if(isOtherVertical)
-        {
+        if(isOtherVertical) {
             m = toLinearEquation(this)[0];
             n = toLinearEquation(this)[1];
             y = m * other.start.getX() + n;
@@ -206,7 +204,6 @@ public class Line {
      * @param other the other line
      * @return      if the point is set on both lines ret true. false otherwise.
      */
-    //TODO: ERROR HERE 15:41
     private boolean checkIfOnBothLines(Point ptr, Line other) {
         //if point does not exist, ret false.
         if(ptr == null)
@@ -216,7 +213,6 @@ public class Line {
             return false;
         if(!inRange(this.start.getY(),this.end.getY(), ptr.getY()))
             return false;
-        //TODO: ERROR HERE 15:49
         if(!inRange(other.start.getX(),other.end.getX(), ptr.getX()))
             return false;
         if(!inRange(other.start.getY(),other.end.getY(), ptr.getY()))
@@ -329,6 +325,21 @@ public class Line {
         if((val> x1) && (val<x2))
             btn = true;
         return btn;
+    }
+
+    public boolean isPointOnLine(Point p){
+        if(isVertical(this) && UTIL.equals(p.getX(),this.start.getX()))
+            return (isBetween(p.getY(),start.getY(), end.getY())
+                    || p.getY() == this.start.getY()
+                    || p.getY() == this.end.getY());
+        if(!(isBetween(p.getX(),start.getX(),end.getX())
+            || UTIL.equals(p.getX(),start.getX())
+            || UTIL.equals(p.getX(),end.getX())))
+            return false;
+        double[] lRep = toLinearEquation(this);
+        if(!p.equals(new Point(p.getX(), lRep[0]*p.getX() +  lRep[1])))
+            return false;
+        return true;
     }
 }
 

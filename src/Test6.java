@@ -16,7 +16,7 @@ public class Test6 {
         Line l1;
         Ball b = new Ball(new Point(400,300),5, Color.RED,ge);
         Point p;
-        b.setVelocity(Velocity.fromAngleAndSpeed(170,1));
+        b.setVelocity(Velocity.fromAngleAndSpeed(180,1));
         ge.addCollidable
                 (new Block
                         (new Rectangle

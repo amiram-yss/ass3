@@ -13,6 +13,10 @@ public class GameEnvironment {
     public static final int RIGHT_BORDER_INDEX = 1;
     public static final int LOWER_BORDER_INDEX = 2;
     public static final int LEFT_BORDER_INDEX = 3;
+    public static final int NUM_BLOCK_LINES = 6;
+    public static final int MAX_BLOCKS_IN_LINE = 12;
+    public static final int BLOCK_WIDTH = 50;
+    public static final int BLOCK_HIGHT = 20;
 
     List<Collidable> collidables;
 
@@ -22,6 +26,22 @@ public class GameEnvironment {
         setRightBorderBlock();
         setLowerBorderBlock();
         setLeftBorderBlock();
+        setGameBlocks();
+    }
+
+    private void setGameBlocks() {
+        for(int i = 0; i < NUM_BLOCK_LINES; i++){
+            for(int j = 0; j < MAX_BLOCKS_IN_LINE - i; j++){
+                collidables.add
+                        (new Block
+                                (new Rectangle
+                                        (new Point
+                                                ((SCREEN_WIDTH - BORDER_SHORT_EDGE) - (i+1)*BLOCK_WIDTH
+                                                        ,(4 * BORDER_SHORT_EDGE + i) + BLOCK_HIGHT)
+                                        ,BLOCK_WIDTH
+                                        ,BLOCK_HIGHT)));
+            }
+        }
     }
 
     private void setUpperBorderBlock(){
