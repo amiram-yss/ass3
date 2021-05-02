@@ -14,9 +14,9 @@ public class Test6 {
         GameEnvironment ge = new GameEnvironment();
 
         Line l1;
-        Ball b = new Ball(new Point(400,300),5, Color.RED,ge);
+        Ball b = new Ball(new Point(648,300),5, Color.RED,ge);
         Point p;
-        b.setVelocity(Velocity.fromAngleAndSpeed(180,1));
+        b.setVelocity(Velocity.fromAngleAndSpeed(-40,5));
         ge.addCollidable
                 (new Block
                         (new Rectangle
@@ -39,8 +39,6 @@ public class Test6 {
             b.moveOneStep();
             d=gui.getDrawSurface();
             s.sleepFor(10);
-            if(UTIL.DEBUG_MODE)
-                UTIL.DEBUG_MODE = false;
         }
     }
 }

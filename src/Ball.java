@@ -269,6 +269,7 @@ public class Ball {
         //
         else{
             this.velocity.dy = -this.velocity.dy;
+            this.velocity.dx = -this.velocity.dx;
         }
     }
 
