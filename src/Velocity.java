@@ -54,4 +54,8 @@ public class Velocity {
         Random r = new Random();
         return fromAngleAndSpeed(r.nextInt(max),degrees);
     }
+
+    public String toString(){
+        return String.format("<"+dx+","+dy+">");
+    }
 }

@@ -37,6 +37,8 @@ public class Block implements Collidable{
     }
 
     private Velocity updateVelocityForEdge(Velocity currentVelocity, List<DIRECTION> directionList) {
+        if(currentVelocity == null  || directionList == null || directionList.isEmpty())
+            return null;
         if(directionList.get(0) == DIRECTION.UP)
             return new Velocity(currentVelocity.dx, -Math.abs(currentVelocity.dy));
         if(directionList.get(0) == DIRECTION.DOWN)
@@ -55,6 +57,11 @@ public class Block implements Collidable{
     public Block drawOn(DrawSurface d){
         d.setColor(this.color);
         d.fillRectangle((int)this.rectangle.getUpperLeft().getX()
+                ,(int)this.rectangle.getUpperLeft().getY()
+                ,(int)this.rectangle.getWidth()
+                ,(int)this.rectangle.getHeight());
+        d.setColor(Color.BLACK);
+        d.drawRectangle((int)this.rectangle.getUpperLeft().getX()
                 ,(int)this.rectangle.getUpperLeft().getY()
                 ,(int)this.rectangle.getWidth()
                 ,(int)this.rectangle.getHeight());

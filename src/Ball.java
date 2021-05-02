@@ -266,11 +266,18 @@ public class Ball {
             center = new Point(newLocation);
             return;
         }
-        //
-        else{
-            this.velocity.dy = -this.velocity.dy;
-            this.velocity.dx = -this.velocity.dx;
-        }
+        //If a hit occured:
+        Line traj = new Line(this.center, newLocation);
+        if(UTIL.DEBUG_MODE)
+            UTIL.NOP();
+        var collisionInfo = gameEnvironment
+                .getClosestCollision(traj);
+        Velocity newVelocity = collisionInfo.collisionObject().hit(
+                collisionInfo.collisionPoint(),
+                this.velocity
+        );
+        this.velocity = newVelocity;
+        this.center = this.velocity.applyToPoint(this.center);
     }
 
     private Line createTrajectoryFromBallToEndOfTheBoard() {

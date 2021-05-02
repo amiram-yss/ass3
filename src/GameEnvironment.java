@@ -26,7 +26,7 @@ public class GameEnvironment {
         setRightBorderBlock();
         setLowerBorderBlock();
         setLeftBorderBlock();
-        setGameBlocks();
+        //setGameBlocks();
     }
 
     private void setGameBlocks() {
@@ -141,13 +141,18 @@ public class GameEnvironment {
         Line tmp = null, shortest = null;
         Point holder = null, toReturn = null;
         Collidable cHolder = null;
+
         for(Collidable c: collidables){
             holder = trajectory.closestIntersectionToStartOfLine
                     (c.getCollisionRectangle());
+            if(holder == null)
+                continue;
             tmp = new Line(trajectory.start().getCopy(),holder);
-            if(shortest == null)
+            if(shortest == null) {
                 shortest = tmp;
-            if(tmp.length()<shortest.length()) {
+                cHolder = c;
+            }
+            if(tmp.length() < shortest.length()) {
                 shortest = tmp;
                 cHolder = c;
             }
