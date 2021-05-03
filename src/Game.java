@@ -17,7 +17,7 @@ public class Game {
 
     private SpriteCollection sprites;
     private GameEnvironment environment;
-    private Ball ball;
+    private Ball[] balls;
     private KeyboardSensor sensor;
 
     public KeyboardSensor getSensor(){
@@ -78,9 +78,13 @@ public class Game {
     }
 
     private void setBall() {
-        ball = new Ball(new Point(400,400),5, Color.RED,environment);
-        ball.setVelocity(Velocity.fromAngleAndSpeed(-45,5));
-        sprites.addSprite(ball);
+        balls = new Ball[2];
+        balls[0] = new Ball(new Point(350,400),5, Color.RED,environment);
+        balls[0].setVelocity(Velocity.fromAngleAndSpeed(-45,5));
+        balls[1] = new Ball(new Point(250,400),5, Color.GREEN,environment);
+        balls[1].setVelocity(Velocity.fromAngleAndSpeed(-22.5,5));
+        sprites.addSprite(balls[0]);
+        sprites.addSprite(balls[1]);
     }
 
     // Initialize a new game: create the Blocks and Ball (and Paddle)
