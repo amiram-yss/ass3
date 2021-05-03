@@ -7,6 +7,7 @@ public class Block implements Collidable{
     private Rectangle rectangle;
     private Color color;
     private GameEnvironment gameEnvironment;
+    static int counter = 0;
 
     public Block(Rectangle r, Color c) {
         rectangle = r;
@@ -45,17 +46,6 @@ public class Block implements Collidable{
     }
 
     private Velocity updateVelocityForEdge(Velocity currentVelocity, List<DIRECTION> directionList) {
-        /*if(currentVelocity == null  || directionList == null || directionList.isEmpty())
-            return null;
-        if(directionList.get(0) == DIRECTION.UP)
-            return new Velocity(currentVelocity.dx, -Math.abs(currentVelocity.dy));
-        if(directionList.get(0) == DIRECTION.DOWN)
-            return new Velocity(currentVelocity.dx, Math.abs(currentVelocity.dy));
-        if(directionList.get(0) == DIRECTION.LEFT)
-            return new Velocity(-Math.abs(currentVelocity.dx), currentVelocity.dy);
-        if(directionList.get(0) == DIRECTION.RIGHT)
-            return new Velocity(Math.abs(currentVelocity.dx), currentVelocity.dy);
-        return null;*/
         Velocity vtr = new Velocity(currentVelocity.dx, currentVelocity.dy);
         if(directionList.get(0) == DIRECTION.UP
                 ||directionList.get(0) == DIRECTION.DOWN)
@@ -63,10 +53,19 @@ public class Block implements Collidable{
         if(directionList.get(0) == DIRECTION.LEFT
                 ||directionList.get(0) == DIRECTION.RIGHT)
             vtr.dx *= -1;
+        if(directionList.size() == 2) {
+            if (directionList.get(1) == DIRECTION.UP
+                    || directionList.get(1) == DIRECTION.DOWN)
+                vtr.dy *= -1;
+            if (directionList.get(1) == DIRECTION.LEFT
+                    || directionList.get(1) == DIRECTION.RIGHT)
+                vtr.dx *= -1;
+        }
         return vtr;
     }
 
     private boolean isOnSingleLine(List<DIRECTION> directionList) {
+
         return directionList.size() == 1;
     }
 
@@ -85,6 +84,8 @@ public class Block implements Collidable{
     }
 
     public boolean isPointInside(Point p){
+        if(UTIL.DEBUG_MODE)
+            UTIL.NOP();
         if (!(UTIL.isBetween(p.getX()
                 ,rectangle.getPoints()[0].getX()
                 ,rectangle.getPoints()[1].getX())

@@ -35,10 +35,10 @@ public class GameEnvironment {
         this.addCollidable(new Block(
                 new Rectangle(
                         new Point(
-                                779,0
-                        ),21,21
+                                778,0
+                        ),22,22
                 )
-                ,new Color(1f,1f,1f,1f)
+                ,Color.blue
         ));
     }
 
@@ -46,15 +46,27 @@ public class GameEnvironment {
         Color[] clrs = new Color[]{Color.GREEN, Color.BLUE,Color.ORANGE,Color.CYAN,Color.GRAY,Color.WHITE};
         for(int i = 0; i < NUM_BLOCK_LINES; i++){
             for(int j = 0; j < MAX_BLOCKS_IN_LINE - i; j++){
-                collidables.add
-                        (new Block
-                                (new Rectangle
+                /*var r = new Block
+                        (new Rectangle
+                                (new Point
+                                        ((SCREEN_WIDTH - BORDER_SHORT_EDGE) - (j+1)*BLOCK_WIDTH
+                                                ,(BORDER_SHORT_EDGE * 5 + BORDER_SHORT_EDGE * i) + BLOCK_HIGHT)
+                                        ,BLOCK_WIDTH
+                                        ,BLOCK_HIGHT)
+                                , clrs[i]);
+                if(i == 5 && j == 0)
+                    UTIL.NOP();
+                System.out.println(r.getCollisionRectangle().getPoints()[0]+"->"+r.getCollisionRectangle().getPoints()[1]);*/
+                Block bta = new Block
+                        (new Rectangle
                                         (new Point
                                                 ((SCREEN_WIDTH - BORDER_SHORT_EDGE) - (j+1)*BLOCK_WIDTH
                                                         ,(BORDER_SHORT_EDGE * 5 + BORDER_SHORT_EDGE * i) + BLOCK_HIGHT)
-                                        ,BLOCK_WIDTH
-                                        ,BLOCK_HIGHT)
-                                        , clrs[i]));
+                                                ,BLOCK_WIDTH
+                                                ,BLOCK_HIGHT)
+                                , clrs[i]);
+                bta.setGameEnvironment(this);
+                collidables.add(bta);
             }
         }
     }
@@ -63,8 +75,8 @@ public class GameEnvironment {
         this.addCollidable(
                 new Block(
                         new Rectangle(
-                                new Point(BORDER_SHORT_EDGE,0)
-                                ,SCREEN_WIDTH - (2 * BORDER_SHORT_EDGE)
+                                new Point(0,0)
+                                ,SCREEN_WIDTH
                                 ,BORDER_SHORT_EDGE
                         )
                         ,Color.blue
@@ -72,13 +84,22 @@ public class GameEnvironment {
         );
     }
 
+    public List<Collidable> getCollidablesSharingPoint(Point p){
+        List<Collidable> ltr = new ArrayList<>();
+        for (Collidable c: collidables){
+            if(((Block)c).isPointInside(p))
+                ltr.add(c);
+        }
+        return ltr;
+    }
+
     private void setLowerBorderBlock(){
         this.addCollidable(
                 new Block(
                         new Rectangle(
-                                new Point(BORDER_SHORT_EDGE
+                                new Point(0
                                         ,SCREEN_HEIGHT-BORDER_SHORT_EDGE)
-                                ,SCREEN_WIDTH - 2 * BORDER_SHORT_EDGE
+                                ,SCREEN_WIDTH
                                 ,BORDER_SHORT_EDGE
                         )
                         ,Color.blue
@@ -147,8 +168,12 @@ public class GameEnvironment {
     }
 
     public List<Block> pointOnBlocks(Point p){
+        int counter = 0;
         List<Block> ptr = new ArrayList<>();
         for(Collidable c: collidables){
+            counter++;
+            if(counter == 57)
+                UTIL.NOP();
             if (((Block)c).isPointInside(p))
                 ptr.add((Block)c);
         }
@@ -196,6 +221,11 @@ public class GameEnvironment {
         if (shortest == null)
             return null;
         return new CollisionInfo(shortest.end(),cHolder);
+    }
+
+    public boolean isPointInsideCollidable(Point p){
+        //TODO SHOW THE DUDE LEFT TO ME!
+        return !pointOnBlocks(p).isEmpty();
     }
 
     public void drawOn(DrawSurface d) {

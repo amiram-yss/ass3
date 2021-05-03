@@ -20,9 +20,7 @@ public class UTIL {
     }
 
     public static boolean isBetween(double val, double x1, double x2){
-        boolean btn = false;
-        if((val < x1) && (val > x2))
-            btn = true;
+        boolean btn = (val < x1) && (val > x2);
         if((val > x1) && (val < x2))
             btn = true;
         return btn;

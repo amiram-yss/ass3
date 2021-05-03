@@ -16,6 +16,7 @@ public class Ball {
     Color color;
     Velocity velocity;
     GameEnvironment gameEnvironment;
+    public static int ctr = 0;
 
     private static final int NO_MOVE = 0;
     private static final int DEGREES = 360;
@@ -267,6 +268,8 @@ public class Ball {
 
     public void moveOneStep() {
         //No collision occurred:
+        ctr++;
+//        System.out.println(ctr);
         Point newLocation = this.velocity.applyToPoint(this.center);
         if(!isCollidingInTheNextMovement(newLocation)){
             center = new Point(newLocation);
@@ -281,6 +284,12 @@ public class Ball {
                 collisionInfo.collisionPoint(),
                 this.velocity
         );
+        if(newVelocity.applyToPoint(center).getX() >= 779)
+            UTIL.DEBUG_MODE = true;
+        if(UTIL.DEBUG_MODE)
+            UTIL.NOP();
+        if(gameEnvironment.isPointInsideCollidable(newVelocity.applyToPoint(center)))
+            newVelocity = new Velocity(-velocity.dx, -velocity.dy);
         this.velocity = newVelocity;
         this.center = this.velocity.applyToPoint(this.center);
     }
