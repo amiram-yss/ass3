@@ -3,6 +3,11 @@ import biuoop.KeyboardSensor;
 
 import java.awt.*;
 
+/**
+ * @author Amiram Yassif
+ * 314985474
+ * ass3
+ */
 public class Paddle implements Sprite, Collidable {
     private static final double SCREEN_WIDTH = 800;
     private static final double UPPER_LEFT_Y_VALUE = 560;
@@ -12,6 +17,7 @@ public class Paddle implements Sprite, Collidable {
     private static final double STARTING_X_VALUE = 500;
     private static final double PADDLE_SPEED = 5;
     private static final double PADDLE_PARTS = 5;
+    private static final double ANGEL = 30;
 
     KeyboardSensor keyboardSensor;
     Rectangle rectangle;
@@ -48,21 +54,22 @@ public class Paddle implements Sprite, Collidable {
                 - this.getCollisionRectangle().getUpperLeft().getX();
         double[] dots = new double[]{
                 0
-                ,PADDLE_WIDTH / 5
-                ,2 * (PADDLE_WIDTH / 5)
-                ,3 * (PADDLE_WIDTH / 5)
-                ,4 * (PADDLE_WIDTH / 5)
-                ,5 * (PADDLE_WIDTH / 5)
+                ,PADDLE_WIDTH / PADDLE_PARTS
+                ,2 * (PADDLE_WIDTH / PADDLE_PARTS)
+                ,3 * (PADDLE_WIDTH / PADDLE_PARTS)
+                ,4 * (PADDLE_WIDTH / PADDLE_PARTS)
+                ,5 * (PADDLE_WIDTH / PADDLE_PARTS)
         };
         if(UTIL.isBetweenOrEquals(x,dots[0],dots[1]))
-            return Velocity.fromAngleAndSpeed(-60,5);
+            return Velocity.fromAngleAndSpeed(-2 * ANGEL,5);
         else if (UTIL.isBetweenOrEquals(x,dots[1],dots[2]))
-            return Velocity.fromAngleAndSpeed(-30,5);
+            return Velocity.fromAngleAndSpeed(-ANGEL,5);
         else if (UTIL.isBetweenOrEquals(x,dots[2],dots[3]))
-            return new Velocity(currentVelocity.dx, -Math.abs(currentVelocity.dy));
+            return new Velocity
+                    (currentVelocity.dx, -Math.abs(currentVelocity.dy));
         else if (UTIL.isBetweenOrEquals(x,dots[3],dots[4]))
-            return Velocity.fromAngleAndSpeed(30,5);
-        return Velocity.fromAngleAndSpeed(60,5);
+            return Velocity.fromAngleAndSpeed(ANGEL,5);
+        return Velocity.fromAngleAndSpeed(2 * ANGEL,5);
     }
 
     @Override
@@ -81,10 +88,10 @@ public class Paddle implements Sprite, Collidable {
                 || UTIL.equals(p.getY(), rectangle.getPoints()[1].getY());
     }
 
-    @Override
+    /*@Override
     public boolean pointOnBlocks(Point p) {
         return isPointInside(p);
-    }
+    }*/
 
     @Override
     public void drawOn(DrawSurface d) {

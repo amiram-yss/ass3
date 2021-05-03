@@ -4,6 +4,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Amiram Yassif
+ * 314985474
+ * ass3
+ */
 public class GameEnvironment {
     public static final double SCREEN_HEIGHT = 600;
     public static final double SCREEN_WIDTH = 800;

@@ -1,4 +1,3 @@
-
 import biuoop.DrawSurface;
 
 import java.awt.*;
@@ -10,7 +9,7 @@ import java.util.Random;
 /**
  * @author Amiram Yassif
  * 314985474
- * ass2
+ * ass3
  */
 public class Line {
     private Point start;

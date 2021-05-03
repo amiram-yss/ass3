@@ -1,10 +1,13 @@
 import biuoop.DrawSurface;
-import biuoop.GUI;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Amiram Yassif
+ * 314985474
+ * ass3
+ */
 public class Rectangle {
     private Point upperLeft;
     private double width, height;

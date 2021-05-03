@@ -1,23 +1,25 @@
-
 import biuoop.DrawSurface;
-import biuoop.GUI;
-
 import java.awt.*;
 import java.util.Random;
 
 /**
  * @author Amiram Yassif
  * 314985474
- * ass2
+ * ass3
  */
-public class Ball implements Sprite{
+public class Ball implements Sprite {
+    /**
+     * Properties
+     */
     Point center, nextIntersectionPoint;
     int radius;
     Color color;
     Velocity velocity;
     GameEnvironment gameEnvironment;
     public static int ctr = 0;
-
+    /**
+     * Consts
+     */
     private static final int NO_MOVE = 0;
     private static final int DEGREES = 360;
     private static final int MAX_RADIUS_SPEED_REDUCER = 50;
@@ -58,35 +60,52 @@ public class Ball implements Sprite{
         nextIntersectionPoint = null;
     }
 
-    // accessors
+    /**
+     *
+      * @return X value of the ball
+     */
     public int getX() {
         return (int) this.center.getX();
     }
 
+    /**
+     *
+     * @return Y value of the ball
+     */
     public int getY() {
         return (int) this.center.getY();
     }
 
+    /**
+     *
+     * @return radius of the ball
+     */
     public int getSize() {
         return this.radius;
     }
 
+    /**
+     *
+     * @return Color of the ball
+     */
     public java.awt.Color getColor() {
         return this.color;
     }
 
     /**
      * Draws the ball on a given drawSurface
-     *
      * @param surface the surface to draw the ball on
      */
-    // draw the ball on the given DrawSurface
     public void drawOn(DrawSurface surface) {
         //Set the color to the ball's color, and print it.
         surface.setColor(this.color);
         surface.fillCircle(this.getX(), this.getY(), this.radius);
     }
 
+    /**
+     * Overrides from Sprite interface.
+     * Updates location of the ball after 1 period of time.
+     */
     @Override
     public void timePassed() {
         moveOneStep();
@@ -183,6 +202,10 @@ public class Ball implements Sprite{
         this.velocity = new Velocity(dx, dy);
     }
 
+    /**
+     *
+     * @return Velocity of the ball
+     */
     public Velocity getVelocity() {
         return this.velocity;
     }
@@ -266,18 +289,30 @@ public class Ball implements Sprite{
 
     }
 
+    /**
+     *
+     * @param newLocation the location of the ball in the next move
+     * @return Will it collide in the next move?
+     */
     public boolean isCollidingInTheNextMovement(Point newLocation){
         return !(center.distance(newLocation)
                 < center.distance(getClosestIntersectionPoint()));
     }
 
+    /**
+     * Moves the ball one step.
+     * in case no collision occurred, it will sum velocity to the center.
+     * Otherwise, it depends on where the ball landed
+     */
     public void moveOneStep() {
+        //Check where it supposes to land.
         Point newLocation = this.velocity.applyToPoint(this.center);
+        //No collision puts the ball whithout any changes
         if(!isCollidingInTheNextMovement(newLocation)){
             center = new Point(newLocation);
             return;
         }
-        //If a hit occurred:
+        //If a hit occurred: check the new velocity.
         Line traj = new Line(this.center, newLocation);
         var collisionInfo = gameEnvironment
                 .getClosestCollision(traj);
@@ -285,8 +320,7 @@ public class Ball implements Sprite{
                 collisionInfo.collisionPoint(),
                 this.velocity
         );
-        if(UTIL.DEBUG_MODE)
-            UTIL.NOP();
+        //If it hits the pedal, run the method which was built for the pedal
         if(collisionInfo.collisionObject().getClass().equals(Paddle.class)){
             this.velocity = (((Paddle)collisionInfo.collisionObject()).hit
                     (collisionInfo.collisionPoint(),velocity));
@@ -295,25 +329,48 @@ public class Ball implements Sprite{
                     .applyToPoint(this.center));
             return;
         }
-        if(gameEnvironment.isPointInsideCollidable(newVelocity.applyToPoint(center)))
+        /*
+         * Otherwise it hit a block. Reflect the velocity to the opposite side.
+         * if there is a block hiding the way, just make a full reflection.
+         */
+        if(gameEnvironment.isPointInsideCollidable
+                (newVelocity.applyToPoint(center)))
             newVelocity = new Velocity(-velocity.dx, -velocity.dy);
         this.velocity = newVelocity;
         this.center = this.velocity.applyToPoint(this.center);
     }
 
+    /**
+     *
+     * @return Trajectory line from the center of the ball
+     * to the border (as if there were no obstacles).
+     */
     private Line createTrajectoryFromBallToEndOfTheBoard() {
+        //Convert to linear equation, and check intersections with the borders.
         double[] mn = Line.toLinearEquation
                 (center, velocity.dx, velocity.dy);
         Point p2 = Line.solveYforX(mn, GameEnvironment.SCREEN_WIDTH);
         Point p1 = Line.solveYforX(mn, 0);
+        //Choose the relevant intersection and return the line.
         if (this.velocity.dx > 0)
             return new Line(center, p2);
         return new Line(center, p1);
     }
 
+    /**
+     *
+     * @return Intersection point of the trajectory with the border
+     * (as if there were no obstacles).
+     */
     public Point getIntersectionPointWithBorders() {
+        //Build the trajectory.
         Point ptr = null;
         Line fullLengthLine = createTrajectoryFromBallToEndOfTheBoard();
+        /*
+         * Check each border block, return the one in the direction of
+         * the velocity
+          */
+
         for (Collidable c : gameEnvironment.getBorders()) {
             ptr = fullLengthLine.closestIntersectionToStartOfLine
                     (c.getCollisionRectangle());
@@ -327,25 +384,44 @@ public class Ball implements Sprite{
         return ptr;
     }
 
+    /**
+     *
+     * @return Intersection line with the border (according to ball's location
+     * and angel of speed).
+     */
     public Line getIntersectionLineWithBorders() {
         return new Line(center, getIntersectionPointWithBorders());
     }
 
+    /**
+     *
+     * @return The closest intersection point, with each available collidable
+     * in gameEnvironment.
+     */
     public Point getClosestIntersectionPoint() {
         Point pHolder = null, ptr = null;
+        //Get the line to the border
         Line route = getIntersectionLineWithBorders();
+        // For each collidable check for intersection points.
         for (Collidable c : gameEnvironment.collidables) {
-            pHolder = route.closestIntersectionToStartOfLine(c.getCollisionRectangle());
+            pHolder = route.closestIntersectionToStartOfLine
+                    (c.getCollisionRectangle());
+            //If doesn't exist, continue to the next object.
             if(pHolder == null)
                 continue;
             if(ptr == null)
                 ptr = pHolder;
+            //Check if it is the shortest rout. If so, update the ptr to return.
             if(this.center.distance(ptr) > this.center.distance(pHolder))
                 ptr = pHolder;
         }
         return ptr;
     }
 
+    /**
+     *
+     * @return The closest intersection trajectory.
+     */
     public Line getClosestIntersectionLine() {
         return new Line(this.center, getClosestIntersectionPoint());
     }

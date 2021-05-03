@@ -1,13 +1,18 @@
 /**
  * @author Amiram Yassif
  * 314985474
- * ass2
+ * ass3
  */
 import biuoop.DrawSurface;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Amiram Yassif
+ * 314985474
+ * ass3
+ */
 public class Point {
     private double x;
     private double y;

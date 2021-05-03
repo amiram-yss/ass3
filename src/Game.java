@@ -4,9 +4,16 @@ import biuoop.KeyboardSensor;
 import biuoop.Sleeper;
 
 import java.awt.*;
-import java.security.Key;
 
+/**
+ * @author Amiram Yassif
+ * 314985474
+ * ass3
+ */
 public class Game {
+    /**
+     * Consts
+     */
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;
     public static final double BORDER_SHORT_EDGE = 20;
@@ -15,15 +22,26 @@ public class Game {
     public static final int BLOCK_WIDTH = 50;
     public static final int BLOCK_HIGHT = 20;
 
+    /**
+     * Properties
+     */
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private Ball[] balls;
     private KeyboardSensor sensor;
 
+    /**
+     *
+     * @return The keyboard sensor
+     */
     public KeyboardSensor getSensor(){
         return this.sensor;
     }
 
+    /**
+     *
+     * @return  Array of 6 colors
+     */
     private Color[] LinesColorsArray(){
         return new Color[]
                 {Color.GREEN
@@ -34,6 +52,9 @@ public class Game {
                         ,Color.WHITE};
     }
 
+    /**
+     * Arranges the game blocks
+     */
     private void setGameBlocks() {
         Color[] clrs = LinesColorsArray();
         for(int i = 0; i < NUM_BLOCK_LINES; i++){
@@ -57,14 +78,25 @@ public class Game {
         }
     }
 
+    /**
+     * Adds collidable to the collection
+     * @param c The collidable
+     */
     public void addCollidable(Collidable c){
         environment.addCollidable(c);
     }
 
+    /**
+     * Adds a sprite to the collection
+     * @param s The sprite
+     */
     public void addSprite(Sprite s){
         sprites.addSprite(s);
     }
 
+    /**
+     * Sets the borders (as blocks)
+     */
     private void setBorders() {
         environment.addCollidable(environment.getUpperBorderBlock());
         environment.addCollidable(environment.getLowerBorderBlock());
@@ -77,51 +109,65 @@ public class Game {
         sprites.addSprite(environment.getLeftBorderBlock());
     }
 
-    private void setBall() {
+    /**
+     * Creates a balls array and sets them to the game.
+     */
+    private void setBalls() {
         balls = new Ball[2];
+        //Set first ball + speed.
         balls[0] = new Ball(new Point(350,400),5, Color.RED,environment);
         balls[0].setVelocity(Velocity.fromAngleAndSpeed(-45,5));
+        //The second one.
         balls[1] = new Ball(new Point(250,400),5, Color.GREEN,environment);
         balls[1].setVelocity(Velocity.fromAngleAndSpeed(-22.5,5));
+        //Add them to sprite collections.
         sprites.addSprite(balls[0]);
         sprites.addSprite(balls[1]);
     }
 
-    // Initialize a new game: create the Blocks and Ball (and Paddle)
-    // and add them to the game.
+    /**
+     * Initialize a new game: create the Blocks and Ball (and Paddle)
+     * and add them to the game.
+     */
     public void initialize(){
+        //Set collections
         environment = new GameEnvironment();
         sprites = new SpriteCollection();
-        setBall();
+        //Set balls
+        setBalls();
+        //Borders
         setBorders();
+        //And blocks
         setGameBlocks();
     }
 
-    // Run the game -- start the animation loop.
+    /**
+     * Run the game -- start the animation loop.
+     */
     public void run(){
+        //Inits vars for the method
         Sleeper sleeper = new Sleeper();
         GUI gui = new GUI("game", SCREEN_WIDTH, SCREEN_HEIGHT);
         DrawSurface d = gui.getDrawSurface();
         sensor = gui.getKeyboardSensor();
 
+        //Insert paddle
         setPaddle(this);
 
+        //Video settings
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
 
-        int count = 0;
-
+        //Animation
         while(true) {
-            count++;
-            System.out.println(count);
-            if(count > 259)
-                UTIL.DEBUG_MODE = true;
+            //Handling equal timing
+            long startTime = System.currentTimeMillis();
 
-            long startTime = System.currentTimeMillis(); // timing
-
+            //Paint all sprites on the surface
             d = gui.getDrawSurface();
             this.sprites.drawAllOn(d);
             gui.show(d);
+            //And tell them time passed.
             this.sprites.notifyAllTimePassed();
 
             // timing
@@ -133,6 +179,10 @@ public class Game {
         }
     }
 
+    /**
+     * Set the paddle on the screen
+     * @param s this
+     */
     private void setPaddle(Game s) {
         Paddle p = new Paddle();
         p.addToGame(this);
