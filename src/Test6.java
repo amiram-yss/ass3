@@ -14,9 +14,9 @@ public class Test6 {
         GameEnvironment ge = new GameEnvironment();
 
         Line l1;
-        Ball b = new Ball(new Point(700,320),5, Color.RED,ge);
+        Ball b = new Ball(new Point(701,100),5, Color.RED,ge);
         Point p;
-        b.setVelocity(Velocity.fromAngleAndSpeed(new Random().nextInt(360),new Random().nextInt(20)));
+        b.setVelocity(Velocity.fromAngleAndSpeed(30,15));
 
 
         while (true){
@@ -32,7 +32,7 @@ public class Test6 {
                 UTIL.NOP();
             b.moveOneStep();
             d=gui.getDrawSurface();
-            s.sleepFor(2);
+            s.sleepFor(10);
         }
     }
 }

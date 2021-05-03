@@ -7,4 +7,8 @@ public interface Collidable {
     // The return is the new velocity expected after the hit (based on
     // the force the object inflicted on us).
     Velocity hit(Point collisionPoint, Velocity currentVelocity);
+
+    public boolean isPointInside(Point p);
+
+    public boolean pointOnBlocks(Point p);
 }

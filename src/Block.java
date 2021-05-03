@@ -65,7 +65,6 @@ public class Block implements Collidable, Sprite{
     }
 
     private boolean isOnSingleLine(List<DIRECTION> directionList) {
-
         return directionList.size() == 1;
     }
 
@@ -88,8 +87,6 @@ public class Block implements Collidable, Sprite{
     }
 
     public boolean isPointInside(Point p){
-        if(UTIL.DEBUG_MODE)
-            UTIL.NOP();
         if (!(UTIL.isBetween(p.getX()
                 ,rectangle.getPoints()[0].getX()
                 ,rectangle.getPoints()[1].getX())
@@ -102,5 +99,10 @@ public class Block implements Collidable, Sprite{
                 , rectangle.getPoints()[1].getY())
                 || UTIL.equals(p.getY(), rectangle.getPoints()[2].getY())
                 || UTIL.equals(p.getY(), rectangle.getPoints()[1].getY());
+    }
+
+    @Override
+    public boolean pointOnBlocks(Point p) {
+        return isPointInside(p);
     }
 }

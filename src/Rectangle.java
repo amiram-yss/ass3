@@ -32,6 +32,21 @@ public class Rectangle {
         return this;
     }
 
+    public Rectangle setUpperLeftPoint(Point p){
+        this.upperLeft = p;
+        return this;
+    }
+
+    public Rectangle moveInXAxis(double d){
+        this.upperLeft.setX(this.upperLeft.getX()+d);
+        return this;
+    }
+
+    public Rectangle moveInYAxis(double d){
+        this.upperLeft.setY(this.upperLeft.getY()+d);
+        return this;
+    }
+
     public Point[] getPoints()
     {
         return new Point[]{

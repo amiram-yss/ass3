@@ -279,13 +279,22 @@ public class Ball implements Sprite{
         }
         //If a hit occurred:
         Line traj = new Line(this.center, newLocation);
-        //TODO check case of multiple object intersection.
         var collisionInfo = gameEnvironment
                 .getClosestCollision(traj);
         Velocity newVelocity = collisionInfo.collisionObject().hit(
                 collisionInfo.collisionPoint(),
                 this.velocity
         );
+        if(UTIL.DEBUG_MODE)
+            UTIL.NOP();
+        if(collisionInfo.collisionObject().getClass().equals(Paddle.class)){
+            this.velocity = (((Paddle)collisionInfo.collisionObject()).hit
+                    (collisionInfo.collisionPoint(),velocity));
+            this.center = (((Paddle)(collisionInfo.collisionObject()))
+                    .hit(collisionInfo.collisionPoint(),velocity)
+                    .applyToPoint(this.center));
+            return;
+        }
         if(gameEnvironment.isPointInsideCollidable(newVelocity.applyToPoint(center)))
             newVelocity = new Velocity(-velocity.dx, -velocity.dy);
         this.velocity = newVelocity;

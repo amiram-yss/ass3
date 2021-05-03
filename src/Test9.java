@@ -5,7 +5,7 @@ public class Test9 {
         GUI gui = new GUI("test9",800,600);
         var ds = gui.getDrawSurface();
         GameEnvironment ge = new GameEnvironment();
-        ge.drawOn(ds);
+        ge.drawAllOn(ds);
         gui.show(ds);
     }
 }

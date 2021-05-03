@@ -18,7 +18,6 @@ public class GameEnvironment {
     public static final int BLOCK_HIGHT = 20;
 
     List<Collidable> collidables;
-    List<Sprite> sprites;
 
     public GameEnvironment(){
         collidables = new ArrayList<>();
@@ -27,70 +26,17 @@ public class GameEnvironment {
         setRightBorderBlock();
         setLowerBorderBlock();
         setLeftBorderBlock();
-        setUpperRightBorder();
-        setGameBlocks();
-    }
-
-    private void setUpperRightBorder() {
-        this.addCollidable(new Block(
-                new Rectangle(
-                        new Point(
-                                778,0
-                        ),22,22
-                )
-                ,Color.blue
-        ));
-    }
-
-    private void setGameBlocks() {
-        Color[] clrs = new Color[]{Color.GREEN, Color.BLUE,Color.ORANGE,Color.CYAN,Color.GRAY,Color.WHITE};
-        for(int i = 0; i < NUM_BLOCK_LINES; i++){
-            for(int j = 0; j < MAX_BLOCKS_IN_LINE - i; j++){
-                /*var r = new Block
-                        (new Rectangle
-                                (new Point
-                                        ((SCREEN_WIDTH - BORDER_SHORT_EDGE) - (j+1)*BLOCK_WIDTH
-                                                ,(BORDER_SHORT_EDGE * 5 + BORDER_SHORT_EDGE * i) + BLOCK_HIGHT)
-                                        ,BLOCK_WIDTH
-                                        ,BLOCK_HIGHT)
-                                , clrs[i]);
-                if(i == 5 && j == 0)
-                    UTIL.NOP();
-                System.out.println(r.getCollisionRectangle().getPoints()[0]+"->"+r.getCollisionRectangle().getPoints()[1]);*/
-                Block bta = new Block
-                        (new Rectangle
-                                        (new Point
-                                                ((SCREEN_WIDTH - BORDER_SHORT_EDGE) - (j+1)*BLOCK_WIDTH
-                                                        ,(BORDER_SHORT_EDGE * 5 + BORDER_SHORT_EDGE * i) + BLOCK_HIGHT)
-                                                ,BLOCK_WIDTH
-                                                ,BLOCK_HIGHT)
-                                , clrs[i]);
-                bta.setGameEnvironment(this);
-                collidables.add(bta);
-            }
-        }
+        //setGameBlocks();
     }
 
     private void setUpperBorderBlock(){
-        this.addCollidable(
-                new Block(
-                        new Rectangle(
-                                new Point(0,0)
-                                ,SCREEN_WIDTH
-                                ,BORDER_SHORT_EDGE
-                        )
-                        ,Color.blue
-                )
-        );
-    }
-
-    public List<Collidable> getCollidablesSharingPoint(Point p){
-        List<Collidable> ltr = new ArrayList<>();
-        for (Collidable c: collidables){
-            if(((Block)c).isPointInside(p))
-                ltr.add(c);
-        }
-        return ltr;
+        Block upperBlock = new Block(new Rectangle(
+                new Point(0,0)
+                ,SCREEN_WIDTH
+                ,BORDER_SHORT_EDGE
+        )
+                ,Color.blue);
+        this.addCollidable(upperBlock);
     }
 
     private void setLowerBorderBlock(){
@@ -108,40 +54,28 @@ public class GameEnvironment {
     }
 
     private void setRightBorderBlock(){
-        this.addCollidable(
-                new Block(
-                        new Rectangle(
-                                new Point(SCREEN_WIDTH-BORDER_SHORT_EDGE
-                                        ,BORDER_SHORT_EDGE)
-                                ,BORDER_SHORT_EDGE
-                                ,SCREEN_HEIGHT - 2 * BORDER_SHORT_EDGE
-                        )
-                        ,Color.blue
+        Block rightBlock = new Block(
+                new Rectangle(
+                        new Point(SCREEN_WIDTH-BORDER_SHORT_EDGE
+                                ,BORDER_SHORT_EDGE)
+                        ,BORDER_SHORT_EDGE
+                        ,SCREEN_HEIGHT - 2 * BORDER_SHORT_EDGE
                 )
+                ,Color.blue
         );
+        this.addCollidable(rightBlock);
     }
 
     private void setLeftBorderBlock(){
-        this.addCollidable(
-                new Block(
-                        new Rectangle(
-                                new Point(0,BORDER_SHORT_EDGE)
-                                ,BORDER_SHORT_EDGE
-                                ,SCREEN_HEIGHT - 2 * BORDER_SHORT_EDGE
-                        )
-                        ,Color.blue
+        Block leftBlock = new Block(
+                new Rectangle(
+                        new Point(0,BORDER_SHORT_EDGE)
+                        ,BORDER_SHORT_EDGE
+                        ,SCREEN_HEIGHT - 2 * BORDER_SHORT_EDGE
                 )
+                ,Color.blue
         );
-        this.addCollidable(
-                new Block(
-                        new Rectangle(
-                                new Point(780,0)
-                                ,BORDER_SHORT_EDGE
-                                ,BORDER_SHORT_EDGE
-                        )
-                        ,Color.blue
-                )
-        );
+        this.addCollidable(leftBlock);
     }
 
     public Block getUpperBorderBlock(){
@@ -160,6 +94,15 @@ public class GameEnvironment {
         return (Block) this.collidables.get(LEFT_BORDER_INDEX);
     }
 
+    public List<Collidable> getCollidablesSharingPoint(Point p){
+        List<Collidable> ltr = new ArrayList<>();
+        for (Collidable c: collidables){
+            if(((Block)c).isPointInside(p))
+                ltr.add(c);
+        }
+        return ltr;
+    }
+
     public boolean isBorder(Block block){
         return (this.getUpperBorderBlock() == block)
                 || (this.getLowerBorderBlock() == block)
@@ -167,15 +110,11 @@ public class GameEnvironment {
                 || (this.getLeftBorderBlock() == block);
     }
 
-    public List<Block> pointOnBlocks(Point p){
-        int counter = 0;
-        List<Block> ptr = new ArrayList<>();
+    public List<Collidable> pointOnBlocks(Point p){
+        List<Collidable> ptr = new ArrayList<>();
         for(Collidable c: collidables){
-            counter++;
-            if(counter == 57)
-                UTIL.NOP();
-            if (((Block)c).isPointInside(p))
-                ptr.add((Block)c);
+            if (((Collidable)c).isPointInside(p))
+                ptr.add(c);
         }
         return ptr;
     }
@@ -224,17 +163,13 @@ public class GameEnvironment {
     }
 
     public boolean isPointInsideCollidable(Point p){
-        //TODO SHOW THE DUDE LEFT TO ME!
         return !pointOnBlocks(p).isEmpty();
     }
 
+    @Deprecated
     public void drawAllOn(DrawSurface d) {
         for(Collidable c: collidables){
             ((Block)c).drawOn(d);
         }
-    }
-
-    public void notifyAllTimePasses(){
-
     }
 }

@@ -23,7 +23,7 @@ public class Test5 {
             d = gui.getDrawSurface();
             b.getIntersectionPointWithBorders().drawOn(d,Color.RED);
             b.moveOneStep();
-            g.drawOn(d);
+            g.drawAllOn(d);
             b.drawOn(d);
             l.drawOn(d,Color.BLACK);
             gui.show(d);

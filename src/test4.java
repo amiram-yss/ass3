@@ -14,7 +14,7 @@ public class test4 {
         GUI g = new GUI("test4",400,400);
         DrawSurface d = g.getDrawSurface();
 
-        ge.drawOn(d);
+        ge.drawAllOn(d);
         g.show(d);
     }
 }

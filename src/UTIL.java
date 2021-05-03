@@ -25,4 +25,8 @@ public class UTIL {
             btn = true;
         return btn;
     }
+
+    public static boolean isBetweenOrEquals(double val, double x1, double x2){
+        return isBetween(val,x1,x2)||equals(val,x1)||equals(val,x2);
+    }
 }

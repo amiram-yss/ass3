@@ -16,7 +16,7 @@ public class Test7 {
         Line THATONE = tester.getClosestIntersectionLine();
         System.out.println(THATONE.end());
         //
-        ge.drawOn(d);
+        ge.drawAllOn(d);
         gui.show(d);
     }
 }
