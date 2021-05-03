@@ -3,6 +3,7 @@ import biuoop.GUI;
 import biuoop.Sleeper;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Test6 {
     public static void main(String[] args){
@@ -13,19 +14,13 @@ public class Test6 {
         GameEnvironment ge = new GameEnvironment();
 
         Line l1;
-        //Ball b = new Ball(new Point(700,100),5, Color.RED,ge);
-        //Ball b = new Ball(new Point(700,110),5, Color.RED,ge);
         Ball b = new Ball(new Point(700,320),5, Color.RED,ge);
         Point p;
-        b.setVelocity(Velocity.fromAngleAndSpeed(45,1));
+        b.setVelocity(Velocity.fromAngleAndSpeed(new Random().nextInt(360),new Random().nextInt(20)));
 
 
         while (true){
-            ctr++;
-            //System.out.println(b.velocity);
-           /* if(b.center.getX() > 200)
-                UTIL.DEBUG_MODE = true;*/
-            ge.drawOn(d);
+            ge.drawAllOn(d);
             b.drawOn(d);
             l1 = b.getClosestIntersectionLine();
             p = b.getClosestIntersectionPoint();

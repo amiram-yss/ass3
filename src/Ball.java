@@ -10,7 +10,7 @@ import java.util.Random;
  * 314985474
  * ass2
  */
-public class Ball {
+public class Ball implements Sprite{
     Point center, nextIntersectionPoint;
     int radius;
     Color color;
@@ -85,6 +85,11 @@ public class Ball {
         //Set the color to the ball's color, and print it.
         surface.setColor(this.color);
         surface.fillCircle(this.getX(), this.getY(), this.radius);
+    }
+
+    @Override
+    public void timePassed() {
+        moveOneStep();
     }
 
     /**
@@ -267,9 +272,6 @@ public class Ball {
     }
 
     public void moveOneStep() {
-        //No collision occurred:
-        ctr++;
-//        System.out.println(ctr);
         Point newLocation = this.velocity.applyToPoint(this.center);
         if(!isCollidingInTheNextMovement(newLocation)){
             center = new Point(newLocation);
@@ -284,10 +286,6 @@ public class Ball {
                 collisionInfo.collisionPoint(),
                 this.velocity
         );
-        if(newVelocity.applyToPoint(center).getX() >= 779)
-            UTIL.DEBUG_MODE = true;
-        if(UTIL.DEBUG_MODE)
-            UTIL.NOP();
         if(gameEnvironment.isPointInsideCollidable(newVelocity.applyToPoint(center)))
             newVelocity = new Velocity(-velocity.dx, -velocity.dy);
         this.velocity = newVelocity;

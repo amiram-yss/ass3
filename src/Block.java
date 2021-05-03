@@ -3,7 +3,7 @@ import biuoop.DrawSurface;
 import java.awt.*;
 import java.util.List;
 
-public class Block implements Collidable{
+public class Block implements Collidable, Sprite{
     private Rectangle rectangle;
     private Color color;
     private GameEnvironment gameEnvironment;
@@ -69,7 +69,7 @@ public class Block implements Collidable{
         return directionList.size() == 1;
     }
 
-    public Block drawOn(DrawSurface d){
+    public void drawOn(DrawSurface d){
         d.setColor(this.color);
         d.fillRectangle((int)this.rectangle.getUpperLeft().getX()
                 ,(int)this.rectangle.getUpperLeft().getY()
@@ -80,7 +80,11 @@ public class Block implements Collidable{
                 ,(int)this.rectangle.getUpperLeft().getY()
                 ,(int)this.rectangle.getWidth()
                 ,(int)this.rectangle.getHeight());
-        return this;
+    }
+
+    @Override
+    public void timePassed() {
+
     }
 
     public boolean isPointInside(Point p){

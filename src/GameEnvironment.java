@@ -1,6 +1,5 @@
 import biuoop.DrawSurface;
 
-import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,7 @@ public class GameEnvironment {
     public static final int BLOCK_HIGHT = 20;
 
     List<Collidable> collidables;
+    List<Sprite> sprites;
 
     public GameEnvironment(){
         collidables = new ArrayList<>();
@@ -228,9 +228,13 @@ public class GameEnvironment {
         return !pointOnBlocks(p).isEmpty();
     }
 
-    public void drawOn(DrawSurface d) {
+    public void drawAllOn(DrawSurface d) {
         for(Collidable c: collidables){
             ((Block)c).drawOn(d);
         }
+    }
+
+    public void notifyAllTimePasses(){
+
     }
 }
